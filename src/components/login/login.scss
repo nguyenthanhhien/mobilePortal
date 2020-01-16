@@ -1,0 +1,19 @@
+.page-login{
+    background-image: url(../../assets/imgs/Login_Background.png);
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    .MuiGrid-container {
+        margin-top: 15%;
+    }
+    .MuiPaper-root {
+        padding: 1rem 0;
+    }
+
+    .MuiTextField-root {
+        margin: 1rem 10%;
+        width: calc(100% - 20%);
+    }
+}

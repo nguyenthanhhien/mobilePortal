@@ -1,0 +1,18 @@
+@import './../../../styles/variables.scss';
+.page-footer{
+    position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	min-height: 30px;
+	line-height: 30px;
+	background-color: $blue;
+	text-align: center;
+	font-family: $font-family-Open-Sans;
+	font-weight: 900;
+	font-size: $font-size-medium;
+	color: white;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	z-index: $z-index-max;
+}

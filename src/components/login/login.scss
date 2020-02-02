@@ -1,4 +1,4 @@
-.page-login{
+.page-login {
     background-image: url(../../assets/imgs/Login_Background.png);
     background-position: center top;
     background-repeat: no-repeat;
@@ -11,9 +11,14 @@
     .MuiPaper-root {
         padding: 1rem 0;
     }
-
     .MuiTextField-root {
         margin: 1rem 10%;
         width: calc(100% - 20%);
+    }
+    .login-text {
+        padding: 0.5rem 0 0.5rem 5%;
+        float: left;
+        border-left: 4px solid #FF414D;
+        color: #FF414D;
     }
 }

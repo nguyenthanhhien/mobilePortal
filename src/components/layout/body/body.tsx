@@ -19,7 +19,7 @@ export default class Body extends Component {
 )} />
             <Route render={() => <div>404 Page Not Found</div>} /> */}
             <Route exact path="/login" component={Login} />
-            <PrivateRoute exact path="/" isSignedIn={false} component={Home} />
+            <PrivateRoute exact path="/" isSignedIn={true} component={Home} />
             <Route render={() => <div>404 Page Not Found</div>} /> */}
           </Switch>
         </Router>

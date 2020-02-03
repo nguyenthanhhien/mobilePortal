@@ -12,12 +12,6 @@ export default class Body extends Component {
       <div className="page-body">
         <Router>
           <Switch>
-            {/* <Route exact path="/" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route exact path="/home" render={()=>(
-  a ? <Redirect to="/login" /> : <div>test</div>     
-)} />
-            <Route render={() => <div>404 Page Not Found</div>} /> */}
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/" isSignedIn={true} component={Home} />
             <Route render={() => <div>404 Page Not Found</div>} /> */}

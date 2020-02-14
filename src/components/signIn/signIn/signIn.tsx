@@ -1,25 +1,13 @@
 import React, { Component } from 'react';
-import './login.scss'
-import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
-import {
-  Button,
-  FormHelperText,
-  TextField,
-  Paper,
-  Grid,
-  Container,
-  Avatar,
-  Link,
-  Typography
-} from '@material-ui/core';
+import './signIn.scss'
+import { Container, CssBaseline, Avatar, Typography, TextField, Button } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import i18next from "i18next";
 
-export default class Login extends Component {
+export default class SignIn extends Component {
   render() {
     return (
-      <div className="page-login">
+      <div className="component-sign-in">
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div>
@@ -57,10 +45,9 @@ export default class Login extends Component {
                 fullWidth
                 variant="contained"
                 color="primary"
-
               >
-                Sign In
-          </Button>
+                {i18next.t('LOGIN.LOGIN_TEXT')}
+              </Button>
             </form>
           </div>
         </Container>

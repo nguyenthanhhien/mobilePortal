@@ -5,7 +5,6 @@ import {
   RouteProps,
 } from 'react-router-dom';
 interface PrivateRouteProps extends RouteProps {
-  // tslint:disable-next-line:no-any
   component: any;
   isSignedIn: boolean;
 }

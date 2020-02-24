@@ -1,8 +1,11 @@
 {
-    "name": "Hien Nguyen",
     "LOGIN": {
         "LOGIN_TEXT": "Login",
         "USERNAME": "Username",
         "PASSWORD": "Password"
+    },
+    "MENU": {
+        "DEALER_CONFIGURATION": "Dealer Configuration",
+        "MANAGEMENT": "Management"
     }
 }

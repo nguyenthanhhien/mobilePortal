@@ -5,10 +5,96 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/*------------Toast style------------*/
+@mixin toast-custom ($icon-section-background, $toast-background, $text-color) {
+  .toast-icon {
+    background-color: $icon-section-background;
+  }
+
+  background-color: $toast-background;
+  color:  $text-color;
+
+  .Toastify__close-button {
+    color:  $text-color;
+  }
+
+  svg {
+    fill: $toast-background;
+  }
+}
+
+.Toastify__toast-container {
+  .Toastify__toast {
+    padding: 0;
+    box-shadow: rgba(0, 0, 0, 0.176) 0px 3px 8px;
+    border-radius: 4px;
+    min-height: 50px;
+    .Toastify__toast-body {
+      margin: 0;
+
+      >div {
+        display: flex;
+        height: 100%;
+      }
+    }
+
+    .Toastify__close-button {
+      padding: 8px 12px;
+    }
+  }
+
+
+  .toast-icon {
+    height: 100%;
+
+    padding-bottom: 8px;
+    padding-top: 8px;
+    position: relative;
+    text-align: center;
+    width: 30px;
+  }
+
+  .toast-content {
+    padding: 8px;
+  }
+
+  .Toastify__toast--error {
+    // .toast-icon {
+    //   background-color: rgb(255, 86, 48);
+    // }
+
+    // background-color: rgb(255, 235, 230);
+    // color: rgb(191, 38, 0);
+
+    // .Toastify__close-button {
+    //   color: rgb(191, 38, 0);
+    // }
+    @include toast-custom (rgb(255, 86, 48), rgb(255, 235, 230), rgb(191, 38, 0))
+  }
+
+  .Toastify__toast--success {
+    @include toast-custom (rgb(54, 179, 126), rgb(227, 252, 239), rgb(0, 102, 68))
+  }
+
+  .Toastify__toast--info {
+    @include toast-custom (rgb(38, 132, 255), white, rgb(80, 95, 121))
+  }
+
+  .Toastify__toast--warning {
+    @include toast-custom (rgb(255, 171, 0), rgb(255, 250, 230), rgb(255, 139, 0))
+  }
+
+  
+
+  .Toastify__progress-bar {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }

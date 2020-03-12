@@ -3,17 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
+import * as commonService from './services/commonService';
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { I18nextProvider } from "react-i18next";
 
 import i18n from "./assets/locales/i18n";
-
+commonService.InitInterceptors()
 ReactDOM.render(
-    <I18nextProvider i18n={i18n}>
+
+  <I18nextProvider i18n={i18n}>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <App />
-    </I18nextProvider>,
-    document.getElementById("root")
-  );
+    </MuiPickersUtilsProvider>
+
+  </I18nextProvider>,
+  document.getElementById("root")
+);
 
 // ReactDOM.render(<App />, document.getElementById('root'));
 

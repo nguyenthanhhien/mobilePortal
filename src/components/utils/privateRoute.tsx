@@ -16,7 +16,7 @@ const PrivateRoute = (props: PrivateRouteProps) => {
       <Route
           {...rest}
           render={(props) =>
-              isSignedIn ? (
+            localStorage.getItem('Authdata') ? (
                   <Component {...props} />
               ) : (
                       <Redirect

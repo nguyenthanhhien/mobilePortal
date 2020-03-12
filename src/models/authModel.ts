@@ -1,5 +1,5 @@
 export interface AuthModel {
-    userName: string,
-    token: string,
-    expire: Date
+    Username: string,
+    Password: string,
+    CommonServerName: string
 }

@@ -1,10 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import './signIn.scss'
-import { Container, CssBaseline, Avatar, Typography, TextField, Button } from '@material-ui/core';
+import { Container, CssBaseline, Avatar, Typography, TextField, Button, Input } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import i18next from "i18next";
 import background from './../../assets/imgs/background.png'
+import { authService } from './../../services/authService';
+import { AuthModel } from './../../models/models'
+import { useForm } from "react-hook-form";
+import { ErrorMessage, ToastTemplate, PresentToast } from './../utils/commonComp'
+import * as constant from './../../services/constant'
+import { toast } from 'react-toastify';
+
+import axios from 'axios';
+// import 'react-toastify/dist/ReactToastify.css';
+
+// import { commonService } from './../../services/commonService'
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -45,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     color: '#001730',
     textAlign: 'center',
     fontWeight: 'bold',
-    
+
   },
   textInput: {
     // '& input:valid + fieldset': {
@@ -64,8 +75,33 @@ const useStyles = makeStyles(theme => ({
 
 }))
 
-export default function SignIn() {
+export default function SignIn(props: any) {
   const classes = useStyles()
+
+  const { register, setValue, handleSubmit, errors } = useForm<AuthModel>();
+  const onSubmit = handleSubmit(({ Username, Password, CommonServerName }) => {
+    authService.login(CommonServerName, Username, Password).then(
+      result => {
+        if(result){
+          if (result == constant.loginStatus.Success) {
+
+            const { from } = props.location.state || { from: { pathname: "/dealers" } };
+            props.history.push(from);
+          }
+          else if (result == constant.loginStatus.NoPermission) {
+            PresentToast(i18next.t('LOGIN.UNAUTHENTICATED_DEALER'), toast.TYPE.WARNING)
+          }
+          else {
+            PresentToast(i18next.t('LOGIN.INVALID_LOGIN'), toast.TYPE.WARNING)
+          }
+        }
+      }
+    )
+    .catch(error => {
+      
+    });
+  });
+
   return (
     <div className={classes.pageContainer}>
       <Container className={classes.container} component="main" maxWidth="xs">
@@ -80,33 +116,43 @@ export default function SignIn() {
           <Typography className={classes.appName} component="h1" variant="h5">
             {i18next.t('MENU.MANAGEMENT')}
           </Typography>
-          <form noValidate>
+          <form>
             <TextField className={classes.textInput}
               variant="outlined"
               margin="normal"
-              required
               fullWidth
-              id="email"
-              label={i18next.t('LOGIN.USERNAME')}
-              name="email"
+              label={i18next.t('LOGIN.SERVER_NAME')}
               autoComplete="email"
               autoFocus
+              name="CommonServerName" inputRef={register({ required: true })}
             />
+
+            {errors.CommonServerName && (<ErrorMessage inputText={i18next.t('LOGIN.SERVER_NAME_REQUIRED_MES')} />)}
             <TextField className={classes.textInput}
               variant="outlined"
               margin="normal"
-              required
               fullWidth
-              name={i18next.t('LOGIN.PASSWORD')}
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              label={i18next.t('LOGIN.USERNAME')}
+              autoComplete="email"
+              autoFocus
+              name="Username" inputRef={register({ required: true })}
             />
+            {errors.Username && (<ErrorMessage inputText={i18next.t('LOGIN.USERNAME_REQUIRED_MES')} />)}
+            <TextField className={classes.textInput}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              label={i18next.t('LOGIN.PASSWORD')}
+              type="password"
+              autoComplete="current-password"
+              name="Password" inputRef={register({ required: true })}
+            />
+            {errors.Password && (<ErrorMessage inputText={i18next.t('LOGIN.PASSWORD_REQUIRED_MES')} />)}
             <Button className={classes.loginBtn}
               type="submit"
               fullWidth
               variant="contained"
+              onClick={onSubmit}
             >
               {i18next.t('LOGIN.LOGIN_TEXT')}
             </Button>

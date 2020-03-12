@@ -1,102 +1,112 @@
 import React, { Component } from 'react';
 import { forwardRef } from 'react';
 import './dealerManagement.scss'
+import { dealerApplicationConfigurationService } from './../../services/dealerApplicationConfiguration'
+import { DealerApplicationConfigurationModel } from './../../models/models'
 
 import MaterialTable, { Column } from 'material-table';
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
-
-interface Row {
-  name: string;
-  surname: string;
-  birthYear: number;
-  birthCity: number;
-}
+import i18next from "i18next";
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import AddEditDealerApplicationConfig from './addEditDealerApplicationConfig'
 
 interface TableState {
-  columns: Array<Column<Row>>;
-  data: Row[];
+  columns: Array<Column<DealerApplicationConfigurationModel>>;
+  data: DealerApplicationConfigurationModel[];
 }
 
 
 export default function DealerManagement() {
   const [state, setState] = React.useState<TableState>({
     columns: [
-      { title: 'Name', field: 'name' },
-      { title: 'Surname', field: 'surname' },
-      { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-      {
-        title: 'Birth Place',
-        field: 'birthCity',
-        lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-      },
+      { title: i18next.t('DEALER_MANAGEMENT.DEALER_ID'), field: 'DealerId' },
+      { title: i18next.t('DEALER_MANAGEMENT.APPLICATION'), field: 'Application' },
+      { title: i18next.t('DEALER_MANAGEMENT.ALLOW_ACCESS'), field: 'AllowAccess' },
+      { title: i18next.t('DEALER_MANAGEMENT.DEVICE_ID'), field: 'DeviceId' },
+      { title: i18next.t('DEALER_MANAGEMENT.DEVICE_DESCRIPTION'), field: 'DeviceDescription' },
+      { title: i18next.t('DEALER_MANAGEMENT.EXPIRIED_DATE'), field: 'ExpiredDate' }
     ],
-    data: [
-      { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-      {
-        name: 'Zerya Betül',
-        surname: 'Baran',
-        birthYear: 2017,
-        birthCity: 34,
-      },
-    ],
+    data: [],
   });
-    return (
+
+  const [isShowModal, setShowModal] = React.useState(false)
+  const [selectedRow, setSelectedRow] = React.useState<DealerApplicationConfigurationModel>()
+
+  const editRow = (dataRow: any) => {
+    let mappingRow: DealerApplicationConfigurationModel = {
+      DealerId: dataRow.dealerId,
+      Application: dataRow.application,
+      AllowAccess: dataRow.allowAccess,
+      DeviceId: dataRow.deviceId,
+      DeviceDescription: dataRow.deviceDescription,
+      DealerApplicationConfigurationKey: dataRow.dealerApplicationConfigurationKey,
+      ExpiredDate: dataRow.expiredDate
+    }
+    setSelectedRow(mappingRow)
+    setShowModal(true);
+  }
+
+  const deleteRow = (dealerAppConfigKey: any) => {
+    alert(dealerAppConfigKey)
+  }
+
+  const showModal = () => {
+    setShowModal(true);
+  };
+
+  const hideModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <div>
+      <AddEditDealerApplicationConfig Open={isShowModal} HandleClose={hideModal} DataObject={selectedRow}>
+      </AddEditDealerApplicationConfig>
+      <button type="button" onClick={showModal}>
+        open
+        </button>
       <MaterialTable
-      title="Editable Example"
-      columns={state.columns}
-      data={state.data}
-      editable={{
-        onRowAdd: newData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.push(newData);
-                return { ...prevState, data };
-              });
-            }, 600);
-          }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              if (oldData) {
-                setState(prevState => {
-                  const data = [...prevState.data];
-                  data[data.indexOf(oldData)] = newData;
-                  return { ...prevState, data };
-                });
-              }
-            }, 600);
-          }),
-        onRowDelete: oldData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.splice(data.indexOf(oldData), 1);
-                return { ...prevState, data };
-              });
-            }, 600);
-          }),
-      }}
-    />
-    )
-  
+        title="Remote Data Preview"
+        columns={[
+          { title: 'Key', field: 'dealerApplicationConfigurationKey', hidden: true },
+          { title: i18next.t('DEALER_MANAGEMENT.DEALER_ID'), field: 'dealerId' },
+          { title: i18next.t('DEALER_MANAGEMENT.APPLICATION'), field: 'application' },
+          { title: i18next.t('DEALER_MANAGEMENT.ALLOW_ACCESS'), field: 'allowAccess' },
+          { title: i18next.t('DEALER_MANAGEMENT.DEVICE_ID'), field: 'deviceId' },
+          { title: i18next.t('DEALER_MANAGEMENT.DEVICE_DESCRIPTION'), field: 'deviceDescription' },
+          { title: i18next.t('DEALER_MANAGEMENT.EXPIRIED_DATE'), field: 'expiredDate' }
+        ]}
+        actions={[
+          {
+            icon: 'edit',
+            tooltip: i18next.t('COMMON.EDIT'),
+            onClick: (event, rowData) => editRow(rowData)
+          },
+          {
+            icon: 'delete',
+            tooltip: i18next.t('COMMON.DELETE'),
+            onClick: (event, rowData) => deleteRow(rowData)
+          }
+        ]}
+        options={{
+          actionsColumnIndex: -1
+        }}
+        data={query =>
+          new Promise((resolve, reject) => {
+            dealerApplicationConfigurationService.getAll(query.page + 1, query.pageSize, "sort")
+              .then(result => {
+                resolve({
+                  data: result.objectList,
+                  page: query.page,
+                  totalCount: result.totalItems
+                })
+              })
+          })
+        }
+      />
+    </div>
+
+  )
+
 }

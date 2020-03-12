@@ -1,11 +1,37 @@
 {
+    "COMMON": {
+        "EDIT": "Edit",
+        "DELETE": "Delete",
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+    },
     "LOGIN": {
         "LOGIN_TEXT": "Login",
         "USERNAME": "Username",
-        "PASSWORD": "Password"
+        "PASSWORD": "Password",
+        "SERVER_NAME": "Server Name",
+        "SERVER_NAME_REQUIRED_MES": "Server Name is required",
+        "USERNAME_REQUIRED_MES": "Username is required",
+        "PASSWORD_REQUIRED_MES": "Password is required",
+        "INVALID_LOGIN": "Invalid Username or Password",
+        "UNAUTHENTICATED_DEALER": "You not allow to access dealer data"
+
     },
     "MENU": {
         "DEALER_CONFIGURATION": "Dealer Configuration",
         "MANAGEMENT": "Management"
+    },
+    "DEALER_MANAGEMENT": {
+        "DEALER_ID": "Dealer ID",
+        "APPLICATION": "Application",
+        "ALLOW_ACCESS": "Allow Access",
+        "DEVICE_ID": "Device ID",
+        "DEVICE_DESCRIPTION": "Device Description",
+        "EXPIRIED_DATE": "Expired Date",
+        "ADD": "Add",
+        "EDIT": "Edit",
+        "DEALER_ID_REQUIRED_MES": "Dealer ID is required",
+        "APPLICATION_REQUIRED_MES": "Application is required"
     }
+
 }

@@ -3,7 +3,10 @@
         "EDIT": "Edit",
         "DELETE": "Delete",
         "SAVE": "Save",
-        "CANCEL": "Cancel"
+        "CANCEL": "Cancel",
+        "COMMON_SERVER_ERROR": "Internal Server Error",
+        "YES": "Yes",
+        "NO": "No"
     },
     "LOGIN": {
         "LOGIN_TEXT": "Login",
@@ -14,7 +17,8 @@
         "USERNAME_REQUIRED_MES": "Username is required",
         "PASSWORD_REQUIRED_MES": "Password is required",
         "INVALID_LOGIN": "Invalid Username or Password",
-        "UNAUTHENTICATED_DEALER": "You not allow to access dealer data"
+        "UNAUTHENTICATED_DEALER": "You not allow to access dealer data",
+        "LOGOUT": "Logout"
 
     },
     "MENU": {
@@ -31,7 +35,10 @@
         "ADD": "Add",
         "EDIT": "Edit",
         "DEALER_ID_REQUIRED_MES": "Dealer ID is required",
-        "APPLICATION_REQUIRED_MES": "Application is required"
+        "APPLICATION_REQUIRED_MES": "Application is required",
+        "ADD_SUCCESSFUL_MES": "Data has been inserted successfully",
+        "UPDATE_SUCCESSFUL_MES": "Data has been updated successfully",
+        "DEALER_CONFIGURATION_DATA": "Application Configuration Data"
     }
 
 }

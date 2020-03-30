@@ -2,38 +2,56 @@ import React, { Component } from 'react';
 import './layout.scss'
 import i18next from "i18next";
 import { Link, Route, BrowserRouter as Router } from 'react-router-dom';
-import { ListItemIcon, ListItemText, Divider, IconButton, Drawer, CssBaseline, AppBar, makeStyles, Theme, useTheme, Toolbar, Typography, List, ListItem, Breadcrumbs } from '@material-ui/core';
+import {
+  ListItemIcon, ListItemText, Divider, IconButton, Drawer,
+  CssBaseline, AppBar, makeStyles, Theme, useTheme, Toolbar,
+  Avatar,
+  Typography,
+  Tooltip,
+  List,
+  ListItem
+} from '@material-ui/core';
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import menuItems from '../../utils/menuItems'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import NavMenu from './../../navMenu/navMenu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { authService } from './../../../services/services'
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+
+import Spinner from './../../spinner/spinner'
+import LoadingProvider from './../../loadingProvider/loadingProvider'
 
 const drawerWidth = 240;
+const smallDrawerWidth = 64;
+
 const useStyles = makeStyles((theme: Theme) =>
   ({
     root: {
       display: 'flex',
     },
     appBar: {
-      transition: theme.transitions.create(['margin', 'width'], {
+      marginLeft: smallDrawerWidth,
+      width: `calc(100% - ${smallDrawerWidth}px)`,
+      zIndex: theme.zIndex.drawer + 1,
+      transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
+      
     },
     appBarShift: {
-      width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
+      width: `calc(100% - ${drawerWidth}px)`,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      marginRight: 36,
     },
     hide: {
       display: 'none',
@@ -41,16 +59,30 @@ const useStyles = makeStyles((theme: Theme) =>
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
+      whiteSpace: 'nowrap',
     },
-    drawerPaper: {
+    drawerOpen: {
       width: drawerWidth,
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
     },
-    drawerHeader: {
+    drawerClose: {
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      overflowX: 'hidden',
+      width: `${smallDrawerWidth}px !important`
+    },
+    toolbar: {
       display: 'flex',
       alignItems: 'center',
-      padding: theme.spacing(0, 1),
-      ...theme.mixins.toolbar,
       justifyContent: 'flex-end',
+      padding: theme.spacing(0, 1),
+      // necessary for content to be below app bar
+      ...theme.mixins.toolbar,
     },
     content: {
       flexGrow: 1,
@@ -59,6 +91,7 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
+      marginLeft: smallDrawerWidth,
     },
     contentShift: {
       transition: theme.transitions.create('margin', {
@@ -66,9 +99,6 @@ const useStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.enteringScreen,
       }),
       marginLeft: drawerWidth,
-    },
-    toolBar: {
-      backgroundColor: '#001730'
     },
     rightItem: {
       marginLeft: 'auto'
@@ -78,15 +108,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Layout() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
+    setOpen(!open);
   };
 
   const logout = () => {
@@ -95,7 +121,7 @@ export default function Layout() {
 
   return (
     <div className="page-layout">
-      <Router>
+        <Router>
         <CssBaseline />
         <AppBar
           position="fixed"
@@ -103,58 +129,68 @@ export default function Layout() {
             [classes.appBarShift]: open,
           })}
         >
-          <Toolbar className={classes.toolBar}>
+          <Toolbar className="toolbar">
             <IconButton
               color="inherit"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
+              className="classes.menuButton"
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
-              {i18next.t('MENU.DEALER_CONFIGURATION')}
-            </Typography>
             <div className={classes.rightItem}>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={logout}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
+              <Tooltip title={i18next.t('LOGIN.LOGOUT')}>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={logout}
+                  color="inherit"
+                >
+                  <ExitToAppIcon />
+                </IconButton>
+              </Tooltip>
             </div>
-
           </Toolbar>
-
         </AppBar>
 
         <Drawer
-          className={classes.drawer}
-          variant="persistent"
-          anchor="left"
-          open={open}
+          variant="permanent"
+          className={clsx(classes.drawer, {
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          })}
           classes={{
-            paper: classes.drawerPaper,
+            paper: clsx({
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
           }}
         >
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <NavMenu />
+          <section className={"user-info " + (!open ? "sm-user-info" : "")} >
+            {
+              open ?
+                <img className="logo-img" src={require('./../../../assets/imgs/logo.png')} /> :
+                <img className="logo-img" src={require('./../../../assets/imgs/sm_logo.png')} />
+            }
+
+            <p className="username">{authService.getUserName()}</p>
+            <p className="serverName">{authService.getServerName()}</p>
+            <img src={require('./../../../assets/imgs/avatar.png')} alt=""
+              className="rounded-circle-img">
+            </img>
+          </section>
+          <section className="nav-menus">
+            <NavMenu />
+          </section>
         </Drawer>
         <main
           className={clsx(classes.content, {
             [classes.contentShift]: open,
           })}
         >
-          <div className={classes.drawerHeader} />
+          <div className={classes.toolbar} />
           {menuItems.map((prop, key) => {
             return (
               <Route
@@ -167,6 +203,7 @@ export default function Layout() {
           })}
         </main>
       </Router>
+      
     </div>
   )
 }

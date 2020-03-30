@@ -1,3 +1,113 @@
-.page-layout{
-    
+@import './../../../styles/variables.scss';
+
+@mixin selectedItem($border-width) {
+    //background-color: rgba(249, 10, 72, 0.1) !important;
+    //border-left: $border-width solid;
+    color: #ffffff;
+
+    .MuiListItemIcon-root {
+        color: $color-primary;
+    }
+}
+
+.page-layout {
+    position: relative;
+    .MuiAppBar-root {
+        background: linear-gradient(to left, #cb0538 30%, #ab0731 100%);
+    }
+
+    .MuiDrawer-paper {
+        background-color: #101018;
+        box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
+    }
+
+    .MuiList-root {
+        padding: 1rem 0 0;
+        .MuiListItem-gutters {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .MuiListItem-root {
+
+            color: #c0c4d1;
+
+            .MuiListItemIcon-root {
+                min-width: 43px;
+                color: rgba(140, 137, 138, 1);
+            }
+
+            &.active {
+                @include selectedItem(3px);
+            }
+
+            &.MuiListItem-root:hover {
+                @include selectedItem(0);
+            }
+        }
+
+
+        .MuiTypography-root {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    }
+
+    .user-info {
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+        margin-top: 1rem;
+        .logo-img {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        p {
+            color: #6c757d;
+            margin: 0 0.5rem;
+
+            &.username {
+                font-weight: 800;
+                font-size: 1.1rem;
+            }
+
+            &.serverName {
+                font-weight: 400;
+
+            }
+        }
+
+        .rounded-circle-img {
+            margin: 2rem auto -35px;
+            width: 70px;
+            box-shadow: 0 0 0 7px #1e1e2d;
+            border-radius: 50% !important;
+            display: block;
+            &.sm-img {
+                width: 40px;
+            }
+        }
+         
+        &.sm-user-info {
+            .logo-img {
+                width: 40px;
+            }
+            .rounded-circle-img {
+                width: 40px;
+            }
+
+            p {
+                display: none;
+            }
+        }
+    }
+
+    .nav-menus {
+        padding-top: 30px;
+        border-radius: 20px 20px 0 0;
+        z-index: 1;
+        background: #1e1e2d;
+        height: 100%;
+    }
+
 }

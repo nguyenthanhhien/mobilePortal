@@ -1,6 +1,6 @@
 export function getAuth() {
     // return authorization header with basic auth credentials
-    let userStorage = localStorage.getItem('Authdata');
+    let userStorage = sessionStorage.getItem('Authdata');
     if (userStorage) {
         let authdata = JSON.parse(userStorage.toString());
 

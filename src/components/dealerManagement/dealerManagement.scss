@@ -1,4 +1,75 @@
+@import './../../styles/variables.scss';
 
-.component-dealer-management{
+.table-style {
+    .MuiPaper-root {
+        box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
+        padding: 0 1.5rem;
+        .MuiToolbar-root {
+            color: #f90a48;
+            padding: 1rem 0;
+            .MuiInput-underline:hover:not(.Mui-disabled):before {
+                border-bottom: 2px solid $color-primary;
+            }
+        }
+    }
+
+    table {
+        //color: #6c757d !important;
+        thead {
+            tr {
+                th {
+                    color: #6c757d !important;
+                    font-weight: 600;
+                }
+
+                th:last-child {
+                    .MuiSvgIcon-root {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    color: #6c757d !important;
+                    // border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    border-bottom: 1px solid #e3eaef;
+                    width: 17% !important;
+                    padding: 0.5rem 1rem;
+                }
+
+                td:last-child {
+                    min-width: 100px !important;
+                    text-align: center !important;
+                    > div {
+                        justify-content: center;
+                    }
+                }
+            }
+
+            tr:hover {
+                background-color: #f7f7f7;
+            }
+        }
+
+    }
+    .access-btn {
+        box-shadow: none;
+        border-radius: 20px;
+        text-transform: capitalize;
+        background-color: transparent !important;
+        color: #a0a3a9;
+        border: 1px solid #a0a3a9;
+        padding: 0;
+        pointer-events: none;
+    }
+
+    .allow-btn {
+        background-color: $color-primary !important;
+        border: 1px solid $color-primary;
+        color: white;
+    }
     
 }

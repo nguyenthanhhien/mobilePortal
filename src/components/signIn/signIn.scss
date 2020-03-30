@@ -1,19 +1,54 @@
+@import './../../styles/variables.scss';
 
 .component-sign-in {
-    // height: 100%;
-    //background-image: url(./../../assets/imgs/background.jpg);
-    // background-position: center top;
-    // background-repeat: no-repeat;
-    // background-size: cover;
-    // height: 100%;
-    // width: 100%;
-    // position: absolute;
-    // display: flex;
-    // align-items: center;
+    height: 100%;
+    background-image: url(./../../assets/imgs/background_black.png);
+    //background-image: url(https://image.freepik.com/free-vector/3d-explosion-with-light-background_23-2148213138.jpg);
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
 
-    // .MuiButton-contained {
-    //     margin-top: 1rem;
-    //     background-color: rgb(220, 0, 78);
-    //     padding: 0.8rem 1.6rem;
-    // }
+    .MuiContainer-root {
+        &>div {
+            padding: 1rem 8% 2rem;
+            border-radius: 0.2rem;
+            background-color: #fcfcfc;
+            // -webkit-box-shadow: 0px 0px 7px -1px rgba(140, 137, 138, 1);
+            // -moz-box-shadow: 0px 0px 7px -1px rgba(140, 137, 138, 1);
+            // box-shadow: 0px 0px 7px -1px rgba(140, 137, 138, 1);
+        }
+
+        .MuiFormControl-root {
+            margin: 1rem 0 0;
+        }
+
+        .MuiButton-contained {
+            margin: 1rem auto 0;
+            background-color: $color-primary;
+            padding: 0.5rem 1.6rem;
+            border-radius: 50px;
+            width: 60%;
+            display: block;
+        }
+    
+        .MuiButton-label {
+            color: white;
+        }
+    
+        .MuiAvatar-root {
+            margin: 0.5rem auto;
+            background-color: $color-primary;
+        }
+    }
+
+    .title {
+        color: #212529;
+        text-align: center;
+    }
+
 }
+

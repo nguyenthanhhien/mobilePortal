@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 // import logo from './logo.svg';
-import { Switch, Route, BrowserRouter, Link, BrowserRouter as Router, useLocation } from 'react-router-dom';
+import { Switch, Route, Redirect, BrowserRouter, Link, BrowserRouter as Router, useLocation } from 'react-router-dom';
 import './App.scss';
 import PrivateRoute from './components/utils/privateRoute';
 import SignIn from './components/signIn/signIn';
@@ -8,27 +8,45 @@ import NavMenu from './components/navMenu/navMenu';
 import Layout from './components/layout/layout'
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-class App extends Component {
-  render() {
-    return (
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { pages } from './components/utils/page'
+import Spinner from './components/spinner/spinner'
+import LoadingProvider from './components/loadingProvider/loadingProvider'
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      'Open Sans',
+      'sans-serif'
+    ].join(','),
+  }
+});
+
+function App() {
+  const [score, setScore] = useState(0);
+  return (
+    <ThemeProvider theme={theme}>
+
       <div className="App">
         <ToastContainer
           position="top-right"
           transition={Slide}
           autoClose={false}
         />
-        <Router>
-          <Switch>
-            <Route path="/login" component={SignIn} />
-            <PrivateRoute path="/dealers" exact isSignedIn={true} component={Layout} />
-
-            <Route render={() => <div>404 Page Not Found</div>} />
-          </Switch>
-        </Router>
-        {/* </ToastProvider> */}
+        <LoadingProvider>
+          <Spinner />
+          <Router>
+            <Switch>
+              <Redirect from="/" exact={true} to={pages.DealerManagement} />
+              <Route path={pages.Login} component={SignIn} />
+              <PrivateRoute path={pages.DealerManagement} component={Layout} />
+            </Switch>
+          </Router>
+        </LoadingProvider>
       </div>
-    );
-  }
+    </ThemeProvider>
+
+  );
 }
 
 export default App;

@@ -4,24 +4,24 @@ import {
   Redirect,
   RouteProps,
 } from 'react-router-dom';
+import { pages } from './../utils/page'
 interface PrivateRouteProps extends RouteProps {
   component: any;
-  isSignedIn: boolean;
 }
 
 const PrivateRoute = (props: PrivateRouteProps) => {
-  const { component: Component, isSignedIn, ...rest } = props;
+  const { component: Component, ...rest } = props;
 
   return (
       <Route
           {...rest}
           render={(props) =>
-            localStorage.getItem('Authdata') ? (
+            sessionStorage.getItem('Authdata') ? (
                   <Component {...props} />
               ) : (
                       <Redirect
                           to={{
-                              pathname: '/login',
+                              pathname: pages.Login,
                               state: { from: props.location }
                           }}
                       />

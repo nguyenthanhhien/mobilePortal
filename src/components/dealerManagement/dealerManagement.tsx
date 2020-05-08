@@ -1,33 +1,25 @@
-import React, { Component, forwardRef, useEffect, useContext } from 'react';
+import React from 'react';
 import './dealerManagement.scss'
 import { dealerApplicationConfigurationService } from '../../services/dealerApplicationConfigurationService'
-import { DealerApplicationConfigurationModel } from './../../models/models'
 
-import MaterialTable, { Column } from 'material-table';
+import MaterialTable from 'material-table';
 import i18next from "i18next";
 import AddEditDealerApplicationConfig from './addEditDealerApplicationConfig'
 import * as commonService from './../../services/commonService'
-import AddBox from '@material-ui/icons/AddBox';
 import { Button } from '@material-ui/core';
-import LoadingContext from '../context/loadingContext'
-
-interface TableState {
-  columns: Array<Column<DealerApplicationConfigurationModel>>;
-  data: DealerApplicationConfigurationModel[];
-}
 
 
 export default function DealerManagement() {
   const [isShowModal, setShowModal] = React.useState(false)
-  const [keyObject, setKeyObject] = React.useState<number>()
-  const [isReload, setReload] = React.useState(false)
+  const [keyObject, setKeyObject] = React.useState(-1)
 
   const editRow = (dataRow: any) => {
-    setKeyObject(dataRow.dealerApplicationConfigurationKey)
+    setKeyObject(dataRow.DealerApplicationConfigurationKey)
     setShowModal(true);
   }
 
   const addRow = () => {
+    setKeyObject(-1)
     setShowModal(true);
   };
   const tableRef = React.createRef<any>();
@@ -40,13 +32,6 @@ export default function DealerManagement() {
     setShowModal(false);
   };
 
-  const handleSelectAll = () => {
-    if (tableRef.current) {
-      tableRef.current.onQueryChange()
-    }
-
-  }
-
   return (
     <div className="table-style">
       <AddEditDealerApplicationConfig Open={isShowModal} Key={keyObject} HandleClose={hideModal}>
@@ -55,23 +40,23 @@ export default function DealerManagement() {
         title=""
         tableRef={tableRef}
         columns={[
-          { title: 'Key', field: 'dealerApplicationConfigurationKey', hidden: true },
-          { title: 'Time', field: 'expiredDate', hidden: true },
+          { title: 'Key', field: 'DealerApplicationConfigurationKey', hidden: true },
+          { title: 'Time', field: 'ExpiredDate', hidden: true },
           {
-            title: i18next.t('DEALER_MANAGEMENT.DEALER_ID'), field: 'dealerId',
+            title: i18next.t('DEALER_MANAGEMENT.DEALER_ID'), field: 'DealerId',
           },
-          { title: i18next.t('DEALER_MANAGEMENT.APPLICATION'), field: 'application' },
+          { title: i18next.t('DEALER_MANAGEMENT.APPLICATION'), field: 'Application' },
 
-          { title: i18next.t('DEALER_MANAGEMENT.DEVICE_ID'), field: 'deviceId' },
-          { title: i18next.t('DEALER_MANAGEMENT.DEVICE_DESCRIPTION'), field: 'deviceDescription' },
+          { title: i18next.t('DEALER_MANAGEMENT.DEVICE_ID'), field: 'DeviceId' },
+          { title: i18next.t('DEALER_MANAGEMENT.DEVICE_DESCRIPTION'), field: 'DeviceDescription' },
           {
-            title: i18next.t('DEALER_MANAGEMENT.EXPIRIED_DATE'), field: 'expiredDateString',
+            title: i18next.t('DEALER_MANAGEMENT.EXPIRIED_DATE'), field: 'ExpiredDateString',
           },
           {
-            field: 'isAllowAccess',
+            field: 'IsAllowAccess',
             title: i18next.t('DEALER_MANAGEMENT.ALLOW_ACCESS'),
-            render: rowData => <Button className={"access-btn " + (rowData.isAllowAccess ? "allow-btn" : "")} variant="contained" size="small" color="primary">
-                {rowData.isAllowAccess ? i18next.t('COMMON.YES') : i18next.t('COMMON.NO')}
+            render: rowData => <Button className={"access-btn " + (rowData.IsAllowAccess ? "allow-btn" : "")} variant="contained" size="small" color="primary">
+                {rowData.IsAllowAccess ? i18next.t('COMMON.YES') : i18next.t('COMMON.NO')}
               </Button >
           }
         ]}
@@ -98,9 +83,9 @@ export default function DealerManagement() {
             dealerApplicationConfigurationService.getAll(query)
               .then(result => {
                 resolve({
-                  data: result.objectList,
+                  data: result.ObjectList,
                   page: query.page,
-                  totalCount: result.totalItems
+                  totalCount: result.TotalItems
                 })
               })
               .catch(error => {

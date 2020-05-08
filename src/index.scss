@@ -4,6 +4,7 @@ body {
   font-family: 'Open sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: $color-background !important;
 
 }
 
@@ -147,16 +148,3 @@ code {
     }
   }
 } 
-  
-.custom-loader:before {
-  background: #000000;
-  content: "";
-  position: fixed;
-}
-
-.custom-loader:after {
-  background: #000000;
-  content: "Loading content...";
-  position: fixed;
-  color: white;
-}

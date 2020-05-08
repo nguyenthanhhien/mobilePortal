@@ -5,7 +5,7 @@
         box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
         padding: 0 1.5rem;
         .MuiToolbar-root {
-            color: #f90a48;
+            color: $color-primary;
             padding: 1rem 0;
             .MuiInput-underline:hover:not(.Mui-disabled):before {
                 border-bottom: 2px solid $color-primary;
@@ -18,7 +18,8 @@
         thead {
             tr {
                 th {
-                    color: #6c757d !important;
+                    color: $color-text-field !important;
+                    border-bottom: 1px solid $color-background;
                     font-weight: 600;
                 }
 
@@ -33,9 +34,8 @@
         tbody {
             tr {
                 td {
-                    color: #6c757d !important;
-                    // border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-                    border-bottom: 1px solid #e3eaef;
+                    color: $color-text-field !important;
+                    border-bottom: 1px solid $color-background;
                     width: 17% !important;
                     padding: 0.5rem 1rem;
                 }
@@ -50,10 +50,15 @@
             }
 
             tr:hover {
-                background-color: #f7f7f7;
+                background-color: $color-background !important;
             }
         }
 
+        tfoot {
+            td {
+                border-bottom: none;
+            }
+        }
     }
     .access-btn {
         box-shadow: none;

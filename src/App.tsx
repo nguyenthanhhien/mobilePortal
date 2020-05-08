@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 // import logo from './logo.svg';
-import { Switch, Route, Redirect, BrowserRouter, Link, BrowserRouter as Router, useLocation } from 'react-router-dom';
+import { Switch, Route, Redirect, BrowserRouter as Router, useLocation } from 'react-router-dom';
 import './App.scss';
 import PrivateRoute from './components/utils/privateRoute';
 import SignIn from './components/signIn/signIn';
@@ -12,7 +12,6 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { pages } from './components/utils/page'
 import Spinner from './components/spinner/spinner'
 import LoadingProvider from './components/loadingProvider/loadingProvider'
-
 const theme = createMuiTheme({
   typography: {
     fontFamily: [
@@ -23,7 +22,6 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  const [score, setScore] = useState(0);
   return (
     <ThemeProvider theme={theme}>
 
@@ -35,7 +33,7 @@ function App() {
         />
         <LoadingProvider>
           <Spinner />
-          <Router>
+          <Router basename={process.env.REACT_APP_BASENAME}>
             <Switch>
               <Redirect from="/" exact={true} to={pages.DealerManagement} />
               <Route path={pages.Login} component={SignIn} />

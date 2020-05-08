@@ -1,29 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './layout.scss'
 import i18next from "i18next";
-import { Link, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 import {
-  ListItemIcon, ListItemText, Divider, IconButton, Drawer,
-  CssBaseline, AppBar, makeStyles, Theme, useTheme, Toolbar,
-  Avatar,
-  Typography,
-  Tooltip,
-  List,
-  ListItem
+  IconButton, Drawer, CssBaseline, AppBar, 
+  makeStyles, Theme, useTheme, Toolbar,
+  Tooltip
 } from '@material-ui/core';
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import menuItems from '../../utils/menuItems'
 import NavMenu from './../../navMenu/navMenu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { authService } from './../../../services/services'
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-
-import Spinner from './../../spinner/spinner'
-import LoadingProvider from './../../loadingProvider/loadingProvider'
-
 const drawerWidth = 240;
 const smallDrawerWidth = 64;
 
@@ -121,7 +110,7 @@ export default function Layout() {
 
   return (
     <div className="page-layout">
-        <Router>
+        <Router basename={process.env.REACT_APP_BASENAME}>
         <CssBaseline />
         <AppBar
           position="fixed"

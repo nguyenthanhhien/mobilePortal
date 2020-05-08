@@ -9,8 +9,6 @@ import { useForm } from "react-hook-form";
 import { ErrorMessage, PresentToast } from './../utils/commonComp'
 import * as constant from './../../services/constant'
 import { toast } from 'react-toastify';
-import Spinner from './../spinner/spinner'
-import LoadingProvider from './../loadingProvider/loadingProvider'
 import LoadingContext from './../context/loadingContext'
 import * as commonService from './../../services/commonService'
 

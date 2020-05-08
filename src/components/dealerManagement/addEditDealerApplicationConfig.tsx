@@ -3,7 +3,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import {
     TextField, Button,
-    Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Checkbox, FormControlLabel
+    Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Checkbox, FormControlLabel, MenuItem
 } from '@material-ui/core';
 import { useForm } from "react-hook-form";
 import i18next from "i18next";
@@ -16,6 +16,7 @@ import {
 import { dealerApplicationConfigurationService } from './../../services/dealerApplicationConfigurationService';
 import { toast } from 'react-toastify';
 import * as commonService from './../../services/commonService'
+import { ApplicationNameModel } from '../../models/applicationNameModel';
 
 const useStyles = makeStyles((theme: Theme) =>
     ({
@@ -40,14 +41,14 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: theme.shadows[5],
             padding: theme.spacing(2, 4, 3),
         },
-        textInput: {
-            '& input:focus + fieldset': {
-                borderColor: '#4AD7D1'
-            },
-            '& input:valid:focus + fieldset': {
-                borderColor: '#4AD7D1'
-            },
-        },
+        // textInput: {
+        //     '& input:focus + fieldset': {
+        //         borderColor: '#4AD7D1'
+        //     },
+        //     '& input:valid:focus + fieldset': {
+        //         borderColor: '#4AD7D1'
+        //     },
+        // },
         closeBtn: {
             float: "right"
         }
@@ -57,13 +58,12 @@ const useStyles = makeStyles((theme: Theme) =>
 interface DialogDataModel extends React.Props<any> {
     Open: boolean
     HandleClose: (isUpdated?: boolean) => void
-    DataObject?: DealerApplicationConfigurationModel,
-    Key?: number
+    Key: number
 }
 
 export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
     const classes = useStyles();
-    const { register, setValue, handleSubmit, errors, watch } = useForm<DealerApplicationConfigurationModel>();
+    const { register, setValue, handleSubmit, errors, reset } = useForm<DealerApplicationConfigurationModel>();
     const [selectedDate, setSelectedDate] = useState<Date | null | undefined>(null)
     const handleDateChange = (date: any) => {
         setSelectedDate(date)
@@ -73,6 +73,13 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
     const allowAccessChange = (event: any) => {
         setChecked(event.target.checked)
     };
+
+    const [applicationName, setApplicationName] = React.useState('');
+    const handleApplicationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setApplicationName(event.target.value);
+    };
+
+    const [applications, setApplications] = useState<ApplicationNameModel[]>([])
 
     const addData = (data: DealerApplicationConfigurationModel) => {
         dealerApplicationConfigurationService.add(data)
@@ -96,7 +103,7 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
                 }
                 else {
                     PresentToast(i18next.t('DEALER_MANAGEMENT.UPDATE_SUCCESSFUL_MES'), toast.TYPE.SUCCESS)
-                    props.HandleClose(true)
+                    closeModal(true)
                 }
             })
             .catch(error => commonService.handleErrorResponse(error));
@@ -106,7 +113,7 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
     const onSubmit = handleSubmit(({ DealerId, Application, DeviceId, DeviceDescription }) => {
         let dealerObject: DealerApplicationConfigurationModel = {
             DealerId: DealerId,
-            Application: Application,
+            Application: applicationName,
             DeviceId: DeviceId,
             DealerApplicationConfigurationKey: props.Key ? props.Key : -1,
             DeviceDescription: DeviceDescription,
@@ -114,42 +121,62 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
             ExpiredDate: selectedDate ? selectedDate : undefined,
             ExpiredDateString: ""
         }
-        if (!props.Key) {
-            addData(dealerObject)
+        if (props.Key > 0) {
+            updateData(dealerObject)
         }
         else {
-            updateData(dealerObject)
+            addData(dealerObject)
         }
     })
 
+    const resetForm = () => {
+        setChecked(false)
+        setSelectedDate(null)
+        if (applications.length > 0) {
+            setApplicationName(applications[0].Name)
+        }
+    }
 
+    const closeModal = (isUpdated?: boolean) => {
+        resetForm()
+        props.HandleClose(isUpdated)
+
+    }
 
     useEffect(() => {
-        if (props.Open && props.Key) {
-            dealerApplicationConfigurationService.getByKey(props.Key).then(res => {
-                setTimeout(() => {
-                    setValue("DealerId", res.dealerId)
-                    setValue("Application", res.application)
-                    let isAllowAccess = res.isAllowAccess ? true : false
-                    setChecked(isAllowAccess)
-                    setValue("DeviceId", res.deviceId)
-                    setValue("DeviceDescription", res.deviceDescription)
-                    setValue("DealerApplicationConfigurationKey", res.dealerApplicationConfigurationKey)
-                    setSelectedDate(res.expiredDate)
-
-                })
+        dealerApplicationConfigurationService.getApplicationNames()
+            .then(data => {
+                setApplications(data)
             })
-                .catch(error => commonService.handleErrorResponse(error));
+            .catch(error => commonService.handleErrorResponse(error));
+    }, [])
 
+    useEffect(() => {
+        if (props.Open) {
+            if (props.Key > 0) {
+                dealerApplicationConfigurationService.getByKey(props.Key).then(res => {
+                    setTimeout(() => {
+                        setValue("DealerId", res.DealerId)
+                        setApplicationName(res.Application)
+                        let isAllowAccess = res.IsAllowAccess ? true : false
+                        setChecked(isAllowAccess)
+                        setValue("DeviceId", res.DeviceId)
+                        setValue("DeviceDescription", res.DeviceDescription)
+                        setValue("DealerApplicationConfigurationKey", res.DealerApplicationConfigurationKey)
+                        setSelectedDate(res.ExpiredDate)
+
+                    }, 100)
+                })
+                    .catch(error => commonService.handleErrorResponse(error));
+
+            }
         }
-
-
-    }, [setValue, props])
+    }, [props.Open])
     return (
-        <Dialog open={props.Open} onClose={() => props.HandleClose()} aria-labelledby="form-dialog-title" maxWidth={"md"}>
+        <Dialog open={props.Open} onClose={() => closeModal()} aria-labelledby="form-dialog-title" maxWidth={"md"}>
             <DialogTitle id="form-dialog-title">
-                {props.DataObject ? i18next.t('DEALER_MANAGEMENT.EDIT') : i18next.t('DEALER_MANAGEMENT.ADD')}
-                <IconButton onClick={() => props.HandleClose()} className={classes.closeBtn}>
+                {props.Key > 0 ? i18next.t('DEALER_MANAGEMENT.EDIT') : i18next.t('DEALER_MANAGEMENT.ADD')}
+                <IconButton onClick={() => closeModal()} className={classes.closeBtn}>
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
@@ -157,13 +184,17 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
                 <form>
                     <Grid container alignItems={"center"}>
                         <Grid item md={6} xs={12}>
-                            <TextField className={classes.textInput}
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 fullWidth
+                                required
                                 label={i18next.t('DEALER_MANAGEMENT.DEALER_ID')}
                                 InputLabelProps={{
                                     shrink: true,
+                                }}
+                                InputProps={{
+                                    readOnly: props.Key > 0 ? true : false,
                                 }}
                                 name="DealerId" inputRef={register({ required: true })}
                             />
@@ -171,20 +202,27 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
 
                         </Grid>
                         <Grid item md={6} xs={12}>
-                            <TextField className={classes.textInput}
-                                variant="outlined"
-                                margin="normal"
-                                fullWidth
+                            <TextField
+                                select
                                 label={i18next.t('DEALER_MANAGEMENT.APPLICATION')}
-                                InputLabelProps={{
-                                    shrink: true,
+                                value={applicationName}
+                                onChange={handleApplicationChange}
+                                fullWidth
+                                required
+                                variant="outlined"
+                                InputProps={{
+                                    readOnly: props.Key > 0 ? true : false,
                                 }}
-                                name="Application" inputRef={register({ required: true })}
-                            />
-                            {errors.Application && (<ErrorMessage inputText={i18next.t('DEALER_MANAGEMENT.APPLICATION_REQUIRED_MES')} />)}
+                            >
+                                {applications.map((option, index) => (
+                                    <MenuItem key={index} value={option.Name}>
+                                        {option.Description}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Grid>
                         <Grid item md={6} xs={12}>
-                            <TextField className={classes.textInput}
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 fullWidth
@@ -198,7 +236,7 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
                         </Grid>
 
                         <Grid item md={6} xs={12}>
-                            <TextField className={classes.textInput}
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 fullWidth
@@ -222,6 +260,7 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
                                 InputAdornmentProps={{ position: "start" }}
                                 onChange={handleDateChange}
                                 name="ExpiredDate"
+                                minDate={new Date()}
                                 inputRef={register}
                             />
                         </Grid>
@@ -243,7 +282,7 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
 
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={() => props.HandleClose()}>
+                <Button color="primary" onClick={() => closeModal()}>
                     {i18next.t('COMMON.CANCEL')}
                 </Button>
                 <Button color="primary" type="submit" onClick={onSubmit}>

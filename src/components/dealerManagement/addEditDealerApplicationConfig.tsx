@@ -41,14 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: theme.shadows[5],
             padding: theme.spacing(2, 4, 3),
         },
-        // textInput: {
-        //     '& input:focus + fieldset': {
-        //         borderColor: '#4AD7D1'
-        //     },
-        //     '& input:valid:focus + fieldset': {
-        //         borderColor: '#4AD7D1'
-        //     },
-        // },
         closeBtn: {
             float: "right"
         }
@@ -192,9 +184,6 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
                                 label={i18next.t('DEALER_MANAGEMENT.DEALER_ID')}
                                 InputLabelProps={{
                                     shrink: true,
-                                }}
-                                InputProps={{
-                                    readOnly: props.Key > 0 ? true : false,
                                 }}
                                 name="DealerId" inputRef={register({ required: true })}
                             />

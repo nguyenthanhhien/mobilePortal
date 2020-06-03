@@ -52,5 +52,6 @@
   },
   "devDependencies": {
     "@types/react-loader-spinner": "^3.1.0"
-  }
+  },
+  "homepage": "."
 }

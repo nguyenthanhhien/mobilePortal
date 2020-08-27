@@ -1,9 +1,9 @@
 export interface DealerApplicationConfigurationModel {
     DealerId: string
     Application: string
-    DeviceId: string
+    DeviceId?: string
     DealerApplicationConfigurationKey: number
-    DeviceDescription: string
+    DeviceDescription?: string
     ExpiredDate?: any
     IsAllowAccess: boolean
     ExpiredDateString: string

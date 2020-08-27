@@ -17,6 +17,7 @@ import { dealerApplicationConfigurationService } from './../../services/dealerAp
 import { toast } from 'react-toastify';
 import * as commonService from './../../services/commonService'
 import { ApplicationNameModel } from '../../models/applicationNameModel';
+import { NotificationRvHookup } from 'material-ui/svg-icons';
 
 const useStyles = makeStyles((theme: Theme) =>
     ({
@@ -102,13 +103,13 @@ export default function AddEditDealerApplicationConfig(props: DialogDataModel) {
     }
 
 
-    const onSubmit = handleSubmit(({ DealerId, Application, DeviceId, DeviceDescription }) => {
+    const onSubmit = handleSubmit(({ DealerId, DeviceId, DeviceDescription }) => {
         let dealerObject: DealerApplicationConfigurationModel = {
             DealerId: DealerId,
             Application: applicationName,
-            DeviceId: DeviceId,
+            DeviceId: DeviceId ? DeviceId : undefined,
             DealerApplicationConfigurationKey: props.Key ? props.Key : -1,
-            DeviceDescription: DeviceDescription,
+            DeviceDescription: DeviceDescription ? DeviceDescription : undefined,
             IsAllowAccess: checked,
             ExpiredDate: selectedDate ? selectedDate : undefined,
             ExpiredDateString: ""

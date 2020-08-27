@@ -1,6 +1,6 @@
 import SettingsIcon from '@material-ui/icons/Settings';
 import DealerManagement from '../dealerManagement/dealerManagement';
-import Home from '../home';
+import Home from '../home/home';
 import { pages } from './../utils/page'
 
 const MenuItems = [
@@ -12,13 +12,13 @@ const MenuItems = [
       exact: true
 
     },
-    // {
-    //   path: '/home',
-    //   name: 'Home',
-    //   icon: SettingsIcon,
-    //   component: Home,
-    //   exact: false
-    // }
+    {
+      path: '/home',
+      name: 'Home',
+      icon: SettingsIcon,
+      component: Home,
+      exact: false
+    }
   ];
   
   export default MenuItems;

@@ -76,7 +76,9 @@ export default function DealerManagement() {
         options={{
           actionsColumnIndex: -1,
           debounceInterval: 2000,
-          searchFieldAlignment: "left"
+          searchFieldAlignment: "left",
+          pageSize: 10,
+          pageSizeOptions: [10, 15, 20]
         }}
         data={query =>
           new Promise((resolve, reject) => {
